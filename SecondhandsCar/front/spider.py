@@ -10,7 +10,7 @@ import pymongo
 class GoodsSpider(object):
     def __init__(self):
         self.headers = HEADERS
-        #self.get_page()
+        self.get_page()
         self.conn = pymongo.MongoClient('127.0.0.1',27017)
         self.mydb = self.conn.SecondhandsCar
         self.myset = self.mydb.lastgoods
@@ -40,21 +40,35 @@ class GoodsSpider(object):
                 header=random.choice(HEADERS)
                 res = requests.get(url,headers=header)
                 html = res.text
-                print(html)
+                print(i)
+                self.parase_page(html)
 
     #解析页面
     def parase_page(self,html):
         parase_html = etree.HTML(html)
         lis = parase_html.xpath("//div[@class='piclist']/ul/li")
         if len(lis)>0:
+            k = 0
             for i in lis:
-                href = i.xpath("./div[@class='pic']/a/href")[0]
-                img_src = i.xpath("./div[@class='pic']/img/src")[0]
+                if len(i.xpath('./@infoid')) == 0:
+                    continue
+                carid = i.xpath('./@infoid')[0]
+                href = i.xpath("./div[@class='pic']/a/@href")[0]
+                img_src = i.xpath("./div[@class='pic']/a/img/@src")[0]
                 title = i.xpath("./div[@class='title']/a/text()")[0]
                 price_million = i.xpath("./div[@class='detail']/div[@class='detail-r']/span/text()")[0]
                 mileage = i.xpath("./div[@class='detail']/div[@class='detail-l']/p[1]/text()")[0]
                 register_date = i.xpath("./div[@class='detail']/div[@class='detail-l']/p[2]/text()")[0]
-                carid = i.xpath('./infoid')[0]
+                print({
+                    'href':href,
+                    'img_src':img_src,
+                    'title':title,
+                    'price_million':price_million,
+                    'mileage':mileage,
+                    'register_date':register_date,
+                    'carid':carid
+                })
+                k+=1
 
     #获取子页面
     def get_detail_page(self):
