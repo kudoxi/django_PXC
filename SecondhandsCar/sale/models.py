@@ -45,3 +45,10 @@ class CarInfo(models.Model):
     class Meta:
         verbose_name = "车辆信息列表"
         verbose_name_plural = "车辆信息"
+#
+# class Production(models.Model):
+#     user = models.ForeignKey(ui,verbose_name="卖家")
+#     title = models.CharField(max_length=255,verbose_name="名称")
+#     useway = models.CharField(max_length=64,verbose_name="用途和产出产品材质")
+#     address = models.CharField(max_length=64,verbose_name="产地")
+#     useway = models.CharField(max_length=64,verbose_name="行业")

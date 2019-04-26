@@ -8,6 +8,9 @@ from time import sleep
 class IdexView(View):
     def index(req):
         params = {}
+        #商品列表
+
+
         return render(req,"index.html",params)
 
 
